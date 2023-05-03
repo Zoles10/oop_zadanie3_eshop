@@ -1,21 +1,15 @@
-package sk.stuba.fei.uim.oop.assignment3.cart.data;
+package sk.stuba.fei.uim.oop.assignment3.cart.web;
 
 import lombok.Getter;
 import lombok.Setter;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 
-import javax.persistence.*;
 import java.util.List;
 
-
-@Entity
 @Getter
 @Setter
-public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class CartRequest {
     private Long id;
-    @OneToMany
     private List<Product> shoppingCart;
     private boolean paid;
 }

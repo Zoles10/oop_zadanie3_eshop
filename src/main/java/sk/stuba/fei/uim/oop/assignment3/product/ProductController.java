@@ -2,6 +2,8 @@ package sk.stuba.fei.uim.oop.assignment3.product;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductAmount;
@@ -25,8 +27,8 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ProductResponse addProduct(@RequestBody ProductRequest productRequest){
-        return new ProductResponse(this.productService.create(productRequest));
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest){
+        return new ResponseEntity<>(new ProductResponse(this.productService.create(productRequest)), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -53,6 +55,4 @@ public class ProductController {
     public ProductAmount setAmountById(@PathVariable("id") Long id, @RequestBody ProductAmount productAmount) throws NotFoundException{
         return this.productService.setAmountById(id, productAmount);
     }
-
-
 }
