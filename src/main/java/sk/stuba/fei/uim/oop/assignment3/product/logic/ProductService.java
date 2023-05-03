@@ -44,8 +44,11 @@ public class ProductService implements IProductService {
     @Override
     public Product updateProductById(Long id, ProductEditRequest productEditRequest) throws NotFoundException {
         Product editedProduct = getProductById(id);
-        editedProduct.setName(productEditRequest.getName());
-        editedProduct.setDescription(productEditRequest.getDescription());
+        if(productEditRequest.getName() != null)
+            editedProduct.setName(productEditRequest.getName());
+        if(productEditRequest.getDescription() != null){
+            editedProduct.setDescription(productEditRequest.getDescription());
+        }
         return this.productRepository.save(editedProduct);
     }
 

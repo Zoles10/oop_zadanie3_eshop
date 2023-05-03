@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.uim.oop.assignment3.cart.logic.CartService;
+import sk.stuba.fei.uim.oop.assignment3.cart.web.CartItemRequest;
 import sk.stuba.fei.uim.oop.assignment3.cart.web.CartResponse;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.IllegalOperationException;
 import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
 
 import java.util.List;
@@ -35,6 +37,16 @@ public class CartController {
     @DeleteMapping("/{id}")
     public CartResponse deleteCartById(@PathVariable("id") Long id) throws NotFoundException{
         return new CartResponse(this.cartService.deleteCartById(id));
+    }
+
+    @PostMapping("/{id}/add")
+    public CartResponse addProductToCart(@PathVariable("id") Long cartId, @RequestBody CartItemRequest cartItemRequest) throws NotFoundException, IllegalOperationException {
+        return new CartResponse(this.cartService.addProductToCart(cartId, cartItemRequest));
+    }
+
+    @GetMapping("/{id}/pay")
+    public String payForCart(@PathVariable("id") Long cartId) throws NotFoundException, IllegalOperationException {
+        return String.valueOf(this.cartService.payForCart(cartId));
     }
 }
 
