@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.product.logic;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.data.ProductRepository;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductAmount;
@@ -32,37 +33,41 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws NotFoundException {
+        Product product = this.productRepository.findProductById(id);
+        if( product == null){
+            throw new NotFoundException();
+        }
         return this.productRepository.findProductById(id);
     }
 
     @Override
-    public Product updateProductById(Long id, ProductEditRequest productEditRequest) {
-        Product editedProduct = this.productRepository.findProductById(id);
+    public Product updateProductById(Long id, ProductEditRequest productEditRequest) throws NotFoundException {
+        Product editedProduct = getProductById(id);
         editedProduct.setName(productEditRequest.getName());
         editedProduct.setDescription(productEditRequest.getDescription());
         return this.productRepository.save(editedProduct);
     }
 
     @Override
-    public Product deleteProductById(Long id){
-        Product deletedProduct = this.productRepository.findProductById(id);
+    public Product deleteProductById(Long id) throws NotFoundException {
+        Product deletedProduct = getProductById(id);
         this.productRepository.delete(deletedProduct);
         return deletedProduct;
     }
 
     @Override
-    public ProductAmount getAmountById(Long id){
+    public ProductAmount getAmountById(Long id) throws NotFoundException{
         ProductAmount productAmount = new ProductAmount();
-        productAmount.setAmount(this.productRepository.findProductById(id).getAmount());
+        productAmount.setAmount(getProductById(id).getAmount());
         return productAmount;
     }
 
     @Override
-    public ProductAmount setAmountById(Long id, ProductAmount amount){
+    public ProductAmount setAmountById(Long id, ProductAmount amount) throws NotFoundException{
         ProductAmount productAmount = new ProductAmount();
-        Product editedProduct = this.productRepository.findProductById(id);
-        editedProduct.setAmount(amount.getAmount());
+        Product editedProduct = getProductById(id);
+        editedProduct.setAmount(editedProduct.getAmount() + amount.getAmount());
         this.productRepository.save(editedProduct);
         productAmount.setAmount(editedProduct.getAmount());
         return productAmount;
