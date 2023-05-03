@@ -11,6 +11,11 @@ public class CartItemRequest {
     private Long productId;
     private int amount;
 
+    public CartItemRequest(Long productId, int amount) {
+        this.productId = productId;
+        this.amount = amount;
+    }
+
     public CartItemRequest(CartItem cartItem) {
         this.productId = cartItem.getProduct().getId();
         this.amount = cartItem.getAmount();

@@ -10,6 +10,9 @@ import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 public class CartItemService {
     @Autowired
     private CartItemRepository cartItemRepository;
+    CartItem findShoppingCartItemById(Long id) {
+        return this.cartItemRepository.findShoppingCartItemById(id);
+    }
 
     CartItem create(Product product, int amount) {
         CartItem cartItem = new CartItem();
