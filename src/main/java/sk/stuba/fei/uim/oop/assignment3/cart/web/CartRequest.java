@@ -2,7 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.cart.web;
 
 import lombok.Getter;
 import lombok.Setter;
-import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
+import sk.stuba.fei.uim.oop.assignment3.cart.data.CartItem;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 public class CartRequest {
     private Long id;
-    private List<Product> shoppingCart;
-    private boolean paid;
+    private List<CartItem> shoppingList;
+    private boolean payed;
 }

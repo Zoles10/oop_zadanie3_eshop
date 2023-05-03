@@ -1,9 +1,10 @@
 package sk.stuba.fei.uim.oop.assignment3.cart;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.uim.oop.assignment3.cart.logic.CartService;
-import sk.stuba.fei.uim.oop.assignment3.cart.web.CartRequest;
 import sk.stuba.fei.uim.oop.assignment3.cart.web.CartResponse;
 import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
 
@@ -22,8 +23,8 @@ public class CartController {
     }
 
     @PostMapping()
-    public CartResponse addCart(@RequestBody CartRequest cartRequest){
-        return new CartResponse(this.cartService.create(cartRequest));
+    public ResponseEntity<CartResponse> addCart(){
+        return new ResponseEntity<>(new CartResponse(this.cartService.create()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

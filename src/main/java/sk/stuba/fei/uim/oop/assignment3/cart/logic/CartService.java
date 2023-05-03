@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.Cart;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.CartRepository;
-import sk.stuba.fei.uim.oop.assignment3.cart.web.CartRequest;
 import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
 
 import java.util.List;
@@ -20,11 +19,8 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Cart create(CartRequest cartRequest) {
-        Cart newCart = new Cart();
-        newCart.setShoppingCart(cartRequest.getShoppingCart());
-        newCart.setPaid(cartRequest.isPaid());
-        return this.cartRepository.save(newCart);
+    public Cart create() {
+        return this.cartRepository.save(new Cart());
     }
 
     @Override
