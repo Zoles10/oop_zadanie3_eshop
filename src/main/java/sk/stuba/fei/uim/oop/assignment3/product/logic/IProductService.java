@@ -2,6 +2,7 @@ package sk.stuba.fei.uim.oop.assignment3.product.logic;
 
 
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
+import sk.stuba.fei.uim.oop.assignment3.product.web.ProductAmount;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductEditRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductRequest;
 
@@ -14,4 +15,6 @@ public interface IProductService {
     Product getProductById(Long id);
     Product updateProductById(Long id, ProductEditRequest productEditRequest);
     Product deleteProductById(Long id);
+    ProductAmount getAmountById(Long id);
+    ProductAmount setAmountById(Long id, ProductAmount amount);
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.stuba.fei.uim.oop.assignment3.product.data.Product;
 import sk.stuba.fei.uim.oop.assignment3.product.data.ProductRepository;
+import sk.stuba.fei.uim.oop.assignment3.product.web.ProductAmount;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductEditRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductRequest;
 
@@ -48,6 +49,23 @@ public class ProductService implements IProductService {
         Product deletedProduct = this.productRepository.findProductById(id);
         this.productRepository.delete(deletedProduct);
         return deletedProduct;
+    }
+
+    @Override
+    public ProductAmount getAmountById(Long id){
+        ProductAmount productAmount = new ProductAmount();
+        productAmount.setAmount(this.productRepository.findProductById(id).getAmount());
+        return productAmount;
+    }
+
+    @Override
+    public ProductAmount setAmountById(Long id, ProductAmount amount){
+        ProductAmount productAmount = new ProductAmount();
+        Product editedProduct = this.productRepository.findProductById(id);
+        editedProduct.setAmount(amount.getAmount());
+        this.productRepository.save(editedProduct);
+        productAmount.setAmount(editedProduct.getAmount());
+        return productAmount;
     }
 
 }
