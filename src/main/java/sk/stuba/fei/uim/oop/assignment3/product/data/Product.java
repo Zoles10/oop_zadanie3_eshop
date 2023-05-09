@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import sk.stuba.fei.uim.oop.assignment3.product.web.ProductEditRequest;
-import sk.stuba.fei.uim.oop.assignment3.product.web.ProductRequest;
 
 @Entity
 @Getter
@@ -18,7 +16,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private int amount;
+    private Long amount;
     private String unit;
     private double price;
 }

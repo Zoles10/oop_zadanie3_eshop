@@ -9,9 +9,9 @@ import sk.stuba.fei.uim.oop.assignment3.cart.data.CartItem;
 @Setter
 public class CartItemRequest {
     private Long productId;
-    private int amount;
+    private Long amount;
 
-    public CartItemRequest(Long productId, int amount) {
+    public CartItemRequest(Long productId, Long amount) {
         this.productId = productId;
         this.amount = amount;
     }

@@ -17,9 +17,9 @@ public class CartItem {
     private Long id;
     @ManyToOne
     private Product product;
-    private int amount;
+    private Long amount;
 
-    public CartItem(Product product, int amount) {
+    public CartItem(Product product, Long amount) {
         this.product = product;
         this.amount = amount;
     }

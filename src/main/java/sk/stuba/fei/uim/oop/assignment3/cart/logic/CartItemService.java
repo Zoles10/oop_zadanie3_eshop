@@ -14,7 +14,7 @@ public class CartItemService {
         return this.cartItemRepository.findShoppingCartItemById(id);
     }
 
-    CartItem create(Product product, int amount) {
+    CartItem create(Product product, Long amount) {
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setAmount(amount);

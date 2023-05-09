@@ -6,5 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ProductAmount {
-    private int amount;
+    private Long amount;
 }
