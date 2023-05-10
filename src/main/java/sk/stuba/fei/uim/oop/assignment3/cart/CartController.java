@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import sk.stuba.fei.uim.oop.assignment3.cart.logic.CartService;
 import sk.stuba.fei.uim.oop.assignment3.cart.web.CartItemRequest;
 import sk.stuba.fei.uim.oop.assignment3.cart.web.CartResponse;
-import sk.stuba.fei.uim.oop.assignment3.exeptions.IllegalOperationException;
-import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.IllegalProductOrCartOperationException;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.ProductOrCartNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,22 +30,22 @@ public class CartController {
     }
 
     @GetMapping("/{id}")
-    public CartResponse findCartById(@PathVariable("id") Long id) throws NotFoundException {
+    public CartResponse findCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
         return new CartResponse(this.cartService.findCartById(id));
     }
 
     @DeleteMapping("/{id}")
-    public CartResponse deleteCartById(@PathVariable("id") Long id) throws NotFoundException{
+    public CartResponse deleteCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
         return new CartResponse(this.cartService.deleteCartById(id));
     }
 
     @PostMapping("/{id}/add")
-    public CartResponse addProductToCart(@PathVariable("id") Long cartId, @RequestBody CartItemRequest cartItemRequest) throws NotFoundException, IllegalOperationException {
+    public CartResponse addProductToCart(@PathVariable("id") Long cartId, @RequestBody CartItemRequest cartItemRequest) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
         return new CartResponse(this.cartService.addProductToCart(cartId, cartItemRequest));
     }
 
     @GetMapping("/{id}/pay")
-    public String payForCart(@PathVariable("id") Long cartId) throws NotFoundException, IllegalOperationException {
+    public String payForCart(@PathVariable("id") Long cartId) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
         return String.valueOf(this.cartService.payForCart(cartId));
     }
 }

@@ -6,8 +6,8 @@ import sk.stuba.fei.uim.oop.assignment3.cart.data.Cart;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.CartItem;
 import sk.stuba.fei.uim.oop.assignment3.cart.data.CartRepository;
 import sk.stuba.fei.uim.oop.assignment3.cart.web.CartItemRequest;
-import sk.stuba.fei.uim.oop.assignment3.exeptions.IllegalOperationException;
-import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.IllegalProductOrCartOperationException;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.ProductOrCartNotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.logic.ProductService;
 
 import java.util.List;
@@ -32,24 +32,24 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Cart findCartById(Long id) throws NotFoundException{
+    public Cart findCartById(Long id) throws ProductOrCartNotFoundException {
         Cart cart = this.cartRepository.findCartById(id);
-        if(cart == null) throw new NotFoundException();
+        if(cart == null) throw new ProductOrCartNotFoundException();
         return cart;
     }
 
     @Override
-    public Cart deleteCartById(Long id) throws NotFoundException {
+    public Cart deleteCartById(Long id) throws ProductOrCartNotFoundException {
         Cart cart = findCartById(id);
         this.cartRepository.delete(cart);
         return cart;
     }
 
     @Override
-    public Cart addProductToCart(Long cartId, CartItemRequest cartItemRequest) throws NotFoundException, IllegalOperationException {
+    public Cart addProductToCart(Long cartId, CartItemRequest cartItemRequest) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
         Cart cart = findCartById(cartId);
         if(cart.isPayed() || productService.getProductById(cartItemRequest.getProductId()).getAmount() < cartItemRequest.getAmount() ){
-            throw new IllegalOperationException();
+            throw new IllegalProductOrCartOperationException();
         }
         for(CartItem cartItem : cart.getShoppingList()){
             if(cartItem.getProduct().getId() .equals(cartItemRequest.getProductId())){
@@ -65,9 +65,9 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public double payForCart(Long cardId) throws NotFoundException, IllegalOperationException {
+    public double payForCart(Long cardId) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
         Cart cart = findCartById(cardId);
-        if(cart.isPayed()) throw new IllegalOperationException();
+        if(cart.isPayed()) throw new IllegalProductOrCartOperationException();
         cart.setPayed(true);
         double price = 0.0;
         for(CartItem cartItem : cart.getShoppingList()){

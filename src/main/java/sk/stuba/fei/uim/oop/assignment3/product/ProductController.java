@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.stuba.fei.uim.oop.assignment3.exeptions.NotFoundException;
+import sk.stuba.fei.uim.oop.assignment3.exeptions.ProductOrCartNotFoundException;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductAmount;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductEditRequest;
 import sk.stuba.fei.uim.oop.assignment3.product.web.ProductRequest;
@@ -32,27 +32,27 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductResponse findProductById(@PathVariable("id") Long id) throws NotFoundException {
+    public ProductResponse findProductById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
         return new ProductResponse(this.productService.getProductById(id));
     }
 
     @PutMapping("/{id}")
-    public ProductResponse updateProduct(@PathVariable("id") Long id, @RequestBody ProductEditRequest productEditRequest) throws NotFoundException{
+    public ProductResponse updateProduct(@PathVariable("id") Long id, @RequestBody ProductEditRequest productEditRequest) throws ProductOrCartNotFoundException {
         return new ProductResponse(this.productService.updateProductById(id, productEditRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ProductResponse deleteProduct(@PathVariable("id") Long id) throws NotFoundException{
+    public ProductResponse deleteProduct(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
         return new ProductResponse(this.productService.deleteProductById(id));
     }
 
     @GetMapping("/{id}/amount")
-    public ProductAmount getAmountById(@PathVariable("id") Long id) throws NotFoundException{
+    public ProductAmount getAmountById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
         return this.productService.getAmountById(id);
     }
 
     @PostMapping("/{id}/amount")
-    public ProductAmount setAmountById(@PathVariable("id") Long id, @RequestBody ProductAmount productAmount) throws NotFoundException{
+    public ProductAmount setAmountById(@PathVariable("id") Long id, @RequestBody ProductAmount productAmount) throws ProductOrCartNotFoundException {
         return this.productService.setAmountById(id, productAmount);
     }
 }
