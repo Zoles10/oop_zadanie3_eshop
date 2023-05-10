@@ -47,14 +47,18 @@ public class CartService implements ICartService{
 
     @Override
     public Cart addProductToCart(Long cartId, CartItemRequest cartItemRequest) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
-        Cart cart = findCartById(cartId);
+        Cart cart = findUnpaidCart(cartId);
         if(cart.isPayed() || productService.getProductById(cartItemRequest.getProductId()).getAmount() < cartItemRequest.getAmount() ){
             throw new IllegalProductOrCartOperationException();
         }
         for(CartItem cartItem : cart.getShoppingList()){
-            if(cartItem.getProduct().getId() .equals(cartItemRequest.getProductId())){
-                cartItem.setAmount(cartItem.getAmount() + cartItemRequest.getAmount());
-                productService.getProductById(cartItemRequest.getProductId()).setAmount(productService.getProductById(cartItemRequest.getProductId()).getAmount() - cartItemRequest.getAmount());
+            Long currentCartId = cartItem.getProduct().getId();
+            if(currentCartId.equals(cartItemRequest.getProductId())){
+                Long currentAmount = cartItem.getAmount();
+                Long requestedAmount = cartItemRequest.getAmount();
+                cartItem.setAmount(currentAmount + requestedAmount);
+                Long amountInStock = productService.getProductById(currentCartId).getAmount();
+                productService.getProductById(currentCartId).setAmount(amountInStock - requestedAmount);
                 return this.cartRepository.save(cart);
             }
         }
@@ -66,8 +70,7 @@ public class CartService implements ICartService{
 
     @Override
     public double payForCart(Long cardId) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
-        Cart cart = findCartById(cardId);
-        if(cart.isPayed()) throw new IllegalProductOrCartOperationException();
+        Cart cart = findUnpaidCart(cardId);
         cart.setPayed(true);
         double price = 0.0;
         for(CartItem cartItem : cart.getShoppingList()){
@@ -75,6 +78,14 @@ public class CartService implements ICartService{
         }
         this.cartRepository.save(cart);
         return price;
+    }
+
+    private Cart findUnpaidCart(Long id) throws IllegalProductOrCartOperationException, ProductOrCartNotFoundException{
+        Cart cart = findCartById(id);
+       if(!cart.isPayed()) return cart;
+       else {
+           throw new IllegalProductOrCartOperationException();
+       }
     }
 
 }

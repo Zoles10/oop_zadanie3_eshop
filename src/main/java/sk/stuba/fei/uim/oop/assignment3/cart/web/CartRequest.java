@@ -12,6 +12,4 @@ public class CartRequest {
     private Long id;
     private List<CartItem> shoppingList;
     private boolean payed;
-
-
 }
