@@ -22,37 +22,45 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping()
-    public List<ProductResponse> getAllProducts(){
-        return this.productService.getAllProducts().stream().map(ProductResponse::new).collect(Collectors.toList());
+    public ResponseEntity<List<ProductResponse>> getAllProducts(){
+        List<ProductResponse> productResponses = this.productService.getAllProducts().stream().map(ProductResponse::new).collect(Collectors.toList());
+        return ResponseEntity.ok(productResponses);
     }
 
     @PostMapping()
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest productRequest){
-        return new ResponseEntity<>(new ProductResponse(this.productService.create(productRequest)), HttpStatus.CREATED);
+        ProductResponse productResponse = new ProductResponse(this.productService.create(productRequest));
+        return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ProductResponse findProductById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
-        return new ProductResponse(this.productService.getProductById(id));
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
+        ProductResponse productResponse = new ProductResponse(this.productService.getProductById(id));
+        return ResponseEntity.ok(productResponse);
     }
 
     @PutMapping("/{id}")
-    public ProductResponse updateProduct(@PathVariable("id") Long id, @RequestBody ProductEditRequest productEditRequest) throws ProductOrCartNotFoundException {
-        return new ProductResponse(this.productService.updateProductById(id, productEditRequest));
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable("id") Long id, @RequestBody ProductEditRequest productEditRequest) throws ProductOrCartNotFoundException {
+        ProductResponse productResponse = new ProductResponse(this.productService.updateProductById(id, productEditRequest));
+        return ResponseEntity.ok(productResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ProductResponse deleteProduct(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
-        return new ProductResponse(this.productService.deleteProductById(id));
+    public ResponseEntity<ProductResponse> deleteProduct(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
+        ProductResponse productResponse = new ProductResponse(this.productService.deleteProductById(id));
+        return ResponseEntity.ok(productResponse);
     }
 
     @GetMapping("/{id}/amount")
-    public ProductAmount getAmountById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
-        return this.productService.getAmountById(id);
+    public ResponseEntity<ProductAmount> getAmountById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
+        ProductAmount productAmount = this.productService.getAmountById(id);
+        return ResponseEntity.ok(productAmount);
     }
 
     @PostMapping("/{id}/amount")
-    public ProductAmount setAmountById(@PathVariable("id") Long id, @RequestBody ProductAmount productAmount) throws ProductOrCartNotFoundException {
-        return this.productService.setAmountById(id, productAmount);
+    public ResponseEntity<ProductAmount> setAmountById(@PathVariable("id") Long id, @RequestBody ProductAmount productAmount) throws ProductOrCartNotFoundException {
+        ProductAmount updatedProductAmount = this.productService.setAmountById(id, productAmount);
+        return ResponseEntity.ok(updatedProductAmount);
     }
+
 }

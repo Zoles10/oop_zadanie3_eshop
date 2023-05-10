@@ -20,33 +20,40 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping()
-    public List<CartResponse> getAllCarts(){
-        return this.cartService.findAll().stream().map(CartResponse::new).collect(Collectors.toList());
+    public ResponseEntity<List<CartResponse>> getAllCarts(){
+        List<CartResponse> cartResponses = this.cartService.findAll().stream().map(CartResponse::new).collect(Collectors.toList());
+        return ResponseEntity.ok(cartResponses);
     }
 
     @PostMapping()
     public ResponseEntity<CartResponse> addCart(){
-        return new ResponseEntity<>(new CartResponse(this.cartService.create()), HttpStatus.CREATED);
+        CartResponse cartResponse = new CartResponse(this.cartService.create());
+        return new ResponseEntity<>(cartResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public CartResponse findCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
-        return new CartResponse(this.cartService.findCartById(id));
+    public ResponseEntity<CartResponse> findCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
+        CartResponse cartResponse = new CartResponse(this.cartService.findCartById(id));
+        return ResponseEntity.ok(cartResponse);
     }
 
     @DeleteMapping("/{id}")
-    public CartResponse deleteCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
-        return new CartResponse(this.cartService.deleteCartById(id));
+    public ResponseEntity<CartResponse> deleteCartById(@PathVariable("id") Long id) throws ProductOrCartNotFoundException {
+        CartResponse cartResponse = new CartResponse(this.cartService.deleteCartById(id));
+        return ResponseEntity.ok(cartResponse);
     }
 
     @PostMapping("/{id}/add")
-    public CartResponse addProductToCart(@PathVariable("id") Long cartId, @RequestBody CartItemRequest cartItemRequest) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
-        return new CartResponse(this.cartService.addProductToCart(cartId, cartItemRequest));
+    public ResponseEntity<CartResponse> addProductToCart(@PathVariable("id") Long cartId, @RequestBody CartItemRequest cartItemRequest) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
+        CartResponse cartResponse = new CartResponse(this.cartService.addProductToCart(cartId, cartItemRequest));
+        return ResponseEntity.ok(cartResponse);
     }
 
     @GetMapping("/{id}/pay")
-    public String payForCart(@PathVariable("id") Long cartId) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
-        return String.valueOf(this.cartService.payForCart(cartId));
+    public ResponseEntity<String> payForCart(@PathVariable("id") Long cartId) throws ProductOrCartNotFoundException, IllegalProductOrCartOperationException {
+        String response = String.valueOf(this.cartService.payForCart(cartId));
+        return ResponseEntity.ok(response);
     }
+
 }
 
